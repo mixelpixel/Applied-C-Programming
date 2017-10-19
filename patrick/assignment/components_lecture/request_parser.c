@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
+#include <stdlib.h>
 
 #define GET_ROOT "GET / HTTP/1.1"
 #define GET_INFO "GET /info HTTP/1.1"
@@ -21,6 +22,9 @@
 #define NOT_FOUND_HEADER "HTTP/1.1 404 Not Found"
 #define NOT_FOUND_BODY "That route isn't supported!!!"
 #define NOT_FOUND NOT_FOUND_HEADER HEADER_BODY_SEPARATOR NOT_FOUND_BODY
+
+#define CONTENT_LENGTH "Content-Length: "
+#define CONTENT_LENGTH_HEADER_LENGTH 16
 
 /******************************************************************************
  * parse_client_request takes a single HTTP request as a STRING
@@ -106,6 +110,30 @@ char* parse_client_request(const char* request, int size) {
         time(&the_time);
         ptr_time = localtime(&the_time);
         printf ("Current local date and time: %s\n", asctime(ptr_time));
+
+        // char* find_Content_Length = strnstr(request, CONTENT_LENGTH, size);
+        // char* find_len_cont_len = strnstr(find_Content_Length, "\n", size-strlen(find_Content_Length));
+        // // puts("Did we find Content-Length: here?");
+        // // printf("%s\n", find_Content_Length);
+        // // printf("%s\n", find_len_cont_len);
+        // // puts("Did we find next line here?");
+        // // printf("%p\n", find_Content_Length);
+        // // printf("%p\n", find_len_cont_len);
+        //
+        // int len_con_len_line = find_len_cont_len - find_Content_Length-1;
+        // char len_str[1024];
+        // strncpy(len_str, find_Content_Length + CONTENT_LENGTH_HEADER_LENGTH, len_con_len_line - CONTENT_LENGTH_HEADER_LENGTH);
+        // int body_length = atoi(len_str);
+        // // printf("Content Length? %d\n", body_length);
+        // // printf("Difference between two pointers: %ld\n", find_len_cont_len - find_Content_Length);
+        //
+        // char* body = strnstr(request, HEADER_BODY_SEPARATOR, size);
+        // printf("BODY! %s\n", body);
+        //
+        // char the_body[1024];
+        // memset(the_body, 0, sizeof(the_body));
+        // strncpy(the_body, body+4, body_length);
+        // printf("THE BODY: %s\n", the_body);
 
         return POST_INFO_RESPONSE;
     }
